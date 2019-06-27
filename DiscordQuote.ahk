@@ -5,10 +5,17 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 #IfWinActive ahk_exe Discord.exe
     ~^+vk43::
+        Clipboard =
         Send {CtrlDown}{vk43}{CtrlUp}
         Send {Tab}
         Sleep 200
-        Send {>}{Space}{``}
-        Send {CtrlDown}{vk56}{CtrlUp}
-        Send {``}+{Enter}+{Enter}
+
+        ClipboardLines := StrSplit(Clipboard, "`n", "`n`r")
+
+        For Number, Line in ClipboardLines {
+            Send {>}{Space}{``}
+            Send %Line%
+            Send {``}+{Enter}
+        }
+        Send +{Enter}
         return
