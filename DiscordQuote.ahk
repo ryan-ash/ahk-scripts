@@ -4,17 +4,17 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance Force ; Makes sure the script only runs one at a time.
 
 #IfWinActive ahk_exe Discord.exe
-    ~^+vk43::
+    ~^+vk45::
+        Send {AltUp}{ShiftUp}
         Clipboard =
         Send {CtrlDown}{vk43}{CtrlUp}
         Send {Tab}
-        Sleep 200
 
         ClipboardLines := StrSplit(Clipboard, "`n", "`n`r")
 
         For Number, Line in ClipboardLines {
             Send {>}{Space}{``}
-            Send %Line%
+            SendRaw %Line%
             Send {``}+{Enter}
         }
         Send +{Enter}
