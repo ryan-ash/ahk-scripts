@@ -1,10 +1,10 @@
-#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance Force ; Makes sure the script only runs one at a time.
 
-; https://regex101.com/r/vxzLHZ/1
-AuthorMatchPattern := "O)^(.+)(\d\d\/\d\d\/\d\d\d\d|(?>(?>Yesterday|Today|Last [a-zA-Z]+) at [\d\:APM ]+))$"
+; https://regex101.com/r/vxzLHZ/2
+AuthorMatchPattern := "O)^(.+)(\d{2}\/\d{2}\/\d{4}|\d{2}\.\d{2}\.\d{4}|(?>(?>Yesterday|Вчера|Today|Сегодня|В \S+|Last \w+) (?>at [\d\:APM ]+|в \d{2}:\d{2})))$"
 
 #IfWinActive ahk_exe Discord.exe
     ~^+vk45::
