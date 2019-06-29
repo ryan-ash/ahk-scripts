@@ -3,7 +3,8 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance Force ; Makes sure the script only runs one at a time.
 
-AuthorMatchPattern := "O)^(\D+)((?>\d\d\/?)+|(?>(?>Yesterday|Today|Last [a-zA-Z]+) at [\d\:APM ]+))$"
+; https://regex101.com/r/vxzLHZ/1
+AuthorMatchPattern := "O)^(.+)(\d\d\/\d\d\/\d\d\d\d|(?>(?>Yesterday|Today|Last [a-zA-Z]+) at [\d\:APM ]+))$"
 
 #IfWinActive ahk_exe Discord.exe
     ~^+vk45::
