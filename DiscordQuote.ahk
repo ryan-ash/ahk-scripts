@@ -15,6 +15,7 @@ AuthorMatchPattern := "O)^(.+)(\d\d\/\d\d\/\d\d\d\d|(?>(?>Yesterday|Today|Last [
         Sleep 200
         BlockStarted := false
 
+        Clipboard := Trim(Clipboard, OmitChars := " `t`r`n")
         ClipboardLines := StrSplit(Clipboard, "`n", "`n`r")
 
         For Number, Line in ClipboardLines {
