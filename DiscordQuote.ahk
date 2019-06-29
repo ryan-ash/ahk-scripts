@@ -12,21 +12,35 @@ AuthorMatchPattern := "O)^(\D+)((?>\d\d\/?)+|(?>(?>Yesterday|Today|Last [a-zA-Z]
         Send {CtrlDown}{vk43}{CtrlUp}
         Send {Tab}
         Sleep 200
+        BlockStarted := false
 
         ClipboardLines := StrSplit(Clipboard, "`n", "`n`r")
 
         For Number, Line in ClipboardLines {
             AuthorLine := RegExMatch(Line, AuthorMatchPattern, AuthorParts)
             if (AuthorLine) {
+                if (BlockStarted) {
+                    BlockStarted := false
+                    Send {``}{``}{``}
+                    Send +{Enter}
+                }
                 AuthorName := AuthorParts.Value(1)
                 Send {@}
                 Send %AuthorName%
                 Send {`:}+{Enter}
             } else {
-                Send {>}{Space}{``}
+                if (!BlockStarted) {
+                    BlockStarted := true
+                    Send {``}{``}{``}
+                } else {
+                    Send +{Enter}
+                }
                 SendRaw %Line%
-                Send {``}+{Enter}
             }
         }
-        Send +{Enter}
+        if (BlockStarted) {
+            BlockStarted := false
+            Send {``}{``}{``}
+            Send +{Enter}
+        }
         return
