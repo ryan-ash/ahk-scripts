@@ -8,7 +8,7 @@ AuthorMatchPattern := "O)^(.+)(\d{2}\/\d{2}\/\d{4}|\d{2}\.\d{2}\.\d{4}|(?>(?>Yes
 
 #IfWinActive ahk_exe Discord.exe
     ~^+vk45::
-        Send {AltUp}{ShiftUp}
+        Send {AltUp}{ShiftUp}{CtrlUp} ; unpressing shift keys just in case
         Clipboard =
         Send {CtrlDown}{vk43}{CtrlUp}
         Send {Tab}
