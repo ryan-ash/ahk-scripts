@@ -7,7 +7,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 AuthorMatchPattern := "O)^(.+)(\d{2}\/\d{2}\/\d{4}|\d{2}\.\d{2}\.\d{4}|(?>(?>Yesterday|Вчера|Today|Сегодня|В \S+|Last \w+) (?>at [\d\:APM ]+|в \d{2}:\d{2})))$"
 
 #IfWinActive ahk_exe Discord.exe
-    ~^+vk45::
+    ~^+vk51::
         gosub Quote
         return
 
