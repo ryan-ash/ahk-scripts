@@ -8,41 +8,68 @@ AuthorMatchPattern := "O)^(.+)(\d{2}\/\d{2}\/\d{4}|\d{2}\.\d{2}\.\d{4}|(?>(?>Yes
 
 #IfWinActive ahk_exe Discord.exe
     ~^+vk45::
-        Send {AltUp}{ShiftUp}{CtrlUp} ; unpressing shift keys just in case
-        Clipboard =
-        Send {CtrlDown}{vk43}{CtrlUp}
-        Send {Tab}
-        Sleep 200
-        BlockStarted := false
-
-        Clipboard := Trim(Clipboard, OmitChars := " `t`r`n")
-        ClipboardLines := StrSplit(Clipboard, "`n", "`n`r")
-
-        For Number, Line in ClipboardLines {
-            AuthorLine := RegExMatch(Line, AuthorMatchPattern, AuthorParts)
-            if (AuthorLine) {
-                if (BlockStarted) {
-                    BlockStarted := false
-                    Send {``}{``}{``}
-                    Send +{Enter}
-                }
-                AuthorName := AuthorParts.Value(1)
-                Send {@}
-                Send %AuthorName%
-                Send {`:}+{Enter}
-            } else {
-                if (!BlockStarted) {
-                    BlockStarted := true
-                    Send {``}{``}{``}
-                } else {
-                    Send +{Enter}
-                }
-                SendRaw %Line%
-            }
-        }
-        if (BlockStarted) {
-            BlockStarted := false
-            Send {``}{``}{``}
-            Send +{Enter}
-        }
+        gosub Quote
         return
+
+#IfWinActive ahk_exe Discord.exe
+    ~LButton::
+        if winc_presses > 0 ; SetTimer already started, so log keypress instead
+        {
+            winc_presses += 1
+            Return
+        }
+
+        winc_presses = 1
+        SetTimer, TheKey, 600
+        Return
+
+        TheKey:
+        SetTimer, TheKey, off
+
+        if winc_presses = 3 ; The key was pressed thrice   
+        {
+            Sleep 200
+            winc_presses = 0
+            gosub Quote
+        }
+        winc_presses = 0
+        Return
+
+Quote:
+    Send {AltUp}{ShiftUp}{CtrlUp} ; unpressing shift keys just in case
+    Clipboard =
+    Send {CtrlDown}{vk43}{CtrlUp}
+    Send {Tab}
+    Sleep 200
+    BlockStarted := false
+
+    Clipboard := Trim(Clipboard, OmitChars := " `t`r`n")
+    ClipboardLines := StrSplit(Clipboard, "`n", "`n`r")
+
+    For Number, Line in ClipboardLines {
+        AuthorLine := RegExMatch(Line, AuthorMatchPattern, AuthorParts)
+        if (AuthorLine) {
+            if (BlockStarted) {
+                BlockStarted := false
+                Send {``}{``}{``}
+                Send +{Enter}
+            }
+            AuthorName := AuthorParts.Value(1)
+            Send {@}
+            Send %AuthorName%
+            Send {`:}+{Enter}
+        } else {
+            if (!BlockStarted) {
+                BlockStarted := true
+                Send {``}{``}{``}
+            } else {
+                Send +{Enter}
+            }
+            SendRaw %Line%
+        }
+    }
+    if (BlockStarted) {
+        BlockStarted := false
+        Send {``}{``}{``}
+        Send +{Enter}
+    }
