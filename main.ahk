@@ -275,6 +275,7 @@
     Send {F11}
 +MButton::
 ScrollLock::
+Insert::
 
     ; Cover/uncover backdrop with GUI (toggle).
     ; Get the currently active window to put on top. Note that alt-tab works normally. 
@@ -303,20 +304,21 @@ DrapeTwoMonitors:
 
     SysGet, m2, Monitor, 2          ; Get data on second monitor size.
     SysGet, m1, Monitor, 1
-    m2DoubleHeight := (m2Bottom - m2Top) * 2
-    m2DoubleWidth := (m2Right - m2Left) * 2
-    m1Width := m1Right - m1Left
+    drapeTop := m1Top < m2Top ? m1Top : m2Top
+    drapeBottom := m1Bottom > m2Bottom ? m1Bottom : m2Bottom
+    drapeHeight := drapeBottom - drapeTop
+    drapeLeft := m1Left < m2Left ? m1Left : m2Left
+    drapeRight := m1Right > m2Right ? m1Right : m2Right
+    drapeWidth := drapeRight - drapeLeft
 
     WinGetTitle, FocusWin, A
     WinHide, ahk_class Shell_SecondaryTrayWnd
     
     Gui 2:-Caption -border +ToolWindow                              ; No title, no taskbar icon.
     Gui 2:Color, 0                                                  ; Blackout blinds. 
-    if (m1Left < m2Left) {
-        Gui 2:Show, x0 y0 h%m2DoubleHeight% w%m2DoubleWidth%, Backdrop ; 1st monitor on the left 
-    } else {
-        Gui 2:Show, x-1920 y0 h%m2DoubleHeight% w%m2DoubleWidth%, Backdrop ; 1st monitor on the right 
-    }
+
+    Gui 2:Show, x%drapeLeft% y%drapeTop% h%drapeHeight% w%drapeWidth%, Backdrop ; 1st monitor on the left 
+
     WinActivate %FocusWin%                                          ; Move the active window to top.
     winset, alwaysontop, on 
     return
