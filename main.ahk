@@ -456,29 +456,15 @@ Return
 ;======================== move windows between monitors ========================
 ;======================== TODO: DEBUG ========================
 
-#vk64::
-    Send {LWinDown}
-    Sleep 100
-    Send {vk25}
-    Sleep 100
-    Send {vk25}
-    Sleep 100
-    Send {vk26}
-    Sleep 100
-    Send {vk26}
-    Sleep 100
-    Send {LWinUp}
+NumpadLeft::
+    Send {LWin Down}{LAlt Down}{vk25}{LAlt Up}{LWin Up}
     return
-#vk66::
-    Send {LWinDown}
-    Sleep 100
-    Send {vk27}
-    Sleep 100
-    Send {vk27}
-    Sleep 100
-    Send {vk26}
-    Sleep 100
-    Send {vk26}
-    Sleep 100
-    Send {LWinUp}
+NumpadRight::
+    Send {LWin Down}{LAlt Down}{vk27}{LAlt Up}{LWin Up}
+    return
+NumpadEnd::
+    Send {LWin Down}{Ctrl Down}{vk25}{Ctrl Up}{LWin Up}
+    return
+NumpadPgDn::
+    Send {LWin Down}{Ctrl Down}{vk27}{Ctrl Up}{LWin Up}
     return
