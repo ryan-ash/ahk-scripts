@@ -482,3 +482,14 @@ Return
     Sleep 100
     Send {LWinUp}
     return
+
+;======================== connect bluetooth devices ========================
+;======================== TODO: FIND A WAY TO VERIFY CONNECT IS SELECTED ========================
+
+#vk43::
+    Send {LWinDown}{vk41}{LWinUp}
+    Sleep 100
+    Send {Tab}
+    Sleep 100
+    Send {Space}
+    return
