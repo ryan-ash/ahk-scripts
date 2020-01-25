@@ -479,3 +479,19 @@ NumpadPgDn::
     Sleep 100
     Send {Space}
     return
+
+;======================== close all explorer windows ========================
+
+#+vk51::
+    CloseExplorerWindows()
+
+    ; workaround to make sure all windows are closed; for some reason, it tends to leave 1 or 2 on the first pass
+    Sleep 500
+    CloseExplorerWindows()
+    return
+
+CloseExplorerWindows()
+{
+    for wb in ComObjCreate("Shell.Application").Windows
+        wb.quit
+}
