@@ -6,4 +6,4 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ;========================== startup ==========================
 
 Run, %A_ScriptDir%\main.ahk
-Run, %A_ScriptDir%\DiscordQuote.ahk
+; Run, %A_ScriptDir%\DiscordQuote.ahk

@@ -495,3 +495,14 @@ CloseExplorerWindows()
     for wb in ComObjCreate("Shell.Application").Windows
         wb.quit
 }
+
+;======================== pause / unpause youtube ========================
+
+~vk13::
+    SetTitleMatchMode, RegEx
+    match_pattern:=".*- YouTube"
+    if WinExist(match_pattern) {
+        ControlClick, x200 y200, %match_pattern%
+    }
+    SetTitleMatchMode, 1
+    return
