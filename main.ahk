@@ -500,9 +500,11 @@ CloseExplorerWindows()
 
 ~vk13::
     SetTitleMatchMode, RegEx
+    WinGet, active_id, ID, A
     match_pattern:=".*- YouTube"
     if WinExist(match_pattern) {
         ControlClick, x200 y200, %match_pattern%
+        WinActivate, ahk_id %active_id%
     }
     SetTitleMatchMode, 1
     return
