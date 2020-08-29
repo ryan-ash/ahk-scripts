@@ -482,7 +482,7 @@ NumpadPgDn::
 
 ;======================== close all explorer windows ========================
 
-#+vk51::
+#+^vk51::
     CloseExplorerWindows()
 
     ; workaround to make sure all windows are closed; for some reason, it tends to leave 1 or 2 on the first pass
