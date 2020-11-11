@@ -519,32 +519,18 @@ SetInputLang(Lang)
     PostMessage, 0x50, 0, % Lang, %CtrlInFocus%
 }
 
-ShiftPressed := 0
 ~LShift::
-    ShiftPressed := 1
-    Sleep 222
-    ShiftPressed := 0
-    return
-
-~LShift Up::
-    if (ShiftPressed == 1)
+    KeyWait, LShift, T0.25
+    If Not ErrorLevel
     {
         SetInputLang(0x0409) ; English
     }
-    ShiftPressed := 0
     return
 
-ControlPressed := 0
-~LControl::
-    ControlPressed := 1
-    Sleep 222
-    ControlPressed := 0
-    return
-
-~LControl Up::
-    if (ControlPressed == 1)
+~LCtrl::
+    KeyWait, LCtrl, T0.25
+    If Not ErrorLevel
     {
         SetInputLang(0x0419) ; Russian
     }
-    ControlPressed := 0
     return
