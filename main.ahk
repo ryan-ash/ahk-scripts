@@ -512,6 +512,8 @@ CloseExplorerWindows()
 
 ;======================== language control ========================
 
+; todo: better handle cases when it's not just a single quick key press
+
 SetInputLang(Lang)
 {
     WinExist("A")
@@ -519,6 +521,7 @@ SetInputLang(Lang)
     PostMessage, 0x50, 0, % Lang, %CtrlInFocus%
 }
 
+#If !WinActive(ahk_exe destiny2.exe)
 ~LShift::
     KeyWait, LShift, T0.25
     If Not ErrorLevel
@@ -527,6 +530,7 @@ SetInputLang(Lang)
     }
     return
 
+#If !WinActive(ahk_exe destiny2.exe)
 ~LCtrl::
     KeyWait, LCtrl, T0.25
     If Not ErrorLevel
