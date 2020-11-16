@@ -523,8 +523,11 @@ SetInputLang(Lang)
 
 #If !WinActive(ahk_exe destiny2.exe)
 ~LShift::
-    KeyWait, LShift, T0.25
-    If Not ErrorLevel
+    StartTime := A_TickCount
+    KeyWait, LShift
+    EndTime := A_TickCount
+    ElapsedSeconds := (EndTime - StartTime)/1000.0
+    if (ElapsedSeconds < 0.25)
     {
         SetInputLang(0x0409) ; English
     }
@@ -532,8 +535,11 @@ SetInputLang(Lang)
 
 #If !WinActive(ahk_exe destiny2.exe)
 ~LCtrl::
-    KeyWait, LCtrl, T0.25
-    If Not ErrorLevel
+    StartTime := A_TickCount
+    KeyWait, LCtrl
+    EndTime := A_TickCount
+    ElapsedSeconds := (EndTime - StartTime)/1000.0
+    if (ElapsedSeconds < 0.25)
     {
         SetInputLang(0x0419) ; Russian
     }
