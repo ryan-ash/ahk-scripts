@@ -470,14 +470,19 @@ NumpadPgDn::
     return
 
 ;======================== connect bluetooth devices ========================
-;======================== TODO: FIND A WAY TO VERIFY CONNECT IS SELECTED ========================
+; NOTE: YOU NEED TO PLACE CONNECT FIRST AND CLEANUP UNRELATED DEVICES FOR THIS TO WORK
 
 #vk43::
     Send {LWinDown}{vk41}{LWinUp}
     Sleep 100
     Send {Tab}
-    Sleep 100
-    Send {Space}
+    Send {Tab}
+    Send {Enter}
+    Sleep 1500
+    Send {Tab}
+    Send {Enter}
+    Sleep 500
+    Send {Esc}
     return
 
 ;======================== close all explorer windows ========================
@@ -512,7 +517,8 @@ CloseExplorerWindows()
 
 ;======================== language control ========================
 
-; todo: better handle cases when it's not just a single quick key press
+; TODO: better handle cases when it's not just a single quick key press
+; TODO: better detect games overall, not just select titles
 
 SetInputLang(Lang)
 {
