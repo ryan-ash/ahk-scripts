@@ -453,6 +453,7 @@ soundToggleClose:
     Gui, destroy
 Return
 
+
 ;======================== move windows between monitors ========================
 ;======================== TODO: DEBUG ========================
 
@@ -469,21 +470,29 @@ NumpadPgDn::
     Send {LWin Down}{Ctrl Down}{vk27}{Ctrl Up}{LWin Up}
     return
 
+
 ;======================== connect bluetooth devices ========================
-; NOTE: YOU NEED TO PLACE CONNECT FIRST AND CLEANUP UNRELATED DEVICES FOR THIS TO WORK
+
+#!vk43::
+    Run, D:\Work\git\win10-bluetooth-headphones\ConnectBluetooth.lnk, D:\Work\git\win10-bluetooth-headphones
+    return
 
 #vk43::
+    gosub OpenConnectMenu
+    return
+
+; NOTE: YOU NEED TO PLACE CONNECT FIRST AND CLEANUP UNRELATED DEVICES FOR THIS TO WORK
+OpenConnectMenu:
     Send {LWinDown}{vk41}{LWinUp}
-    Sleep 100
+    Sleep 200
     Send {Tab}
     Send {Tab}
+    Sleep 200
     Send {Enter}
     Sleep 1500
     Send {Tab}
-    Send {Enter}
-    Sleep 500
-    Send {Esc}
     return
+
 
 ;======================== close all explorer windows ========================
 
@@ -500,6 +509,7 @@ CloseExplorerWindows()
     for wb in ComObjCreate("Shell.Application").Windows
         wb.quit
 }
+
 
 ;======================== pause / unpause youtube ========================
 
@@ -529,11 +539,11 @@ SetInputLang(Lang)
 
 #If !WinActive(ahk_exe destiny2.exe)
 ~LShift::
-    StartTime := A_TickCount
+    ShiftStartTime := A_TickCount
     KeyWait, LShift
-    EndTime := A_TickCount
-    ElapsedSeconds := (EndTime - StartTime)/1000.0
-    if (ElapsedSeconds < 0.25)
+    ShiftEndTime := A_TickCount
+    ShiftElapsedSeconds := (ShiftEndTime - ShiftStartTime)/1000.0
+    if (ShiftElapsedSeconds < 0.25)
     {
         SetInputLang(0x0409) ; English
     }
@@ -541,11 +551,11 @@ SetInputLang(Lang)
 
 #If !WinActive(ahk_exe destiny2.exe)
 ~LCtrl::
-    StartTime := A_TickCount
+    CtrlStartTime := A_TickCount
     KeyWait, LCtrl
-    EndTime := A_TickCount
-    ElapsedSeconds := (EndTime - StartTime)/1000.0
-    if (ElapsedSeconds < 0.25)
+    CtrlEndTime := A_TickCount
+    CtrlElapsedSeconds := (CtrlEndTime - CtrlStartTime)/1000.0
+    if (CtrlElapsedSeconds < 0.25)
     {
         SetInputLang(0x0419) ; Russian
     }
