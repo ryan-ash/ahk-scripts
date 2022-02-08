@@ -527,11 +527,13 @@ CloseExplorerWindows()
 
 ;======================== tv control ========================
 
+#!^2::
 #!^vk62::
     ; MsgBox, "TV"
     Run, "D:\Distrib\Monitor Profile Switcher\MonitorSwitcher.exe" -load:C:\Users\scarl\AppData\Roaming\MonitorSwitcher\Profiles\TV.xml, , Hide,
     return
 
+#!^1::
 #!^vk61::
     ; MsgBox, "Core"
     Run, "D:\Distrib\Monitor Profile Switcher\MonitorSwitcher.exe" -load:C:\Users\scarl\AppData\Roaming\MonitorSwitcher\Profiles\Core.xml, , Hide,
