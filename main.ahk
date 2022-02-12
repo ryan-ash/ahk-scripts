@@ -543,10 +543,12 @@ CloseExplorerWindows()
 ;======================== window control ========================
 
 #vk64::
+    SetKeyDelay, 30
     Send {LWin Down}{Left}{Left}{Left}{Up}{Up}{Up}{LWin Up}
     return
 
 #vk66::
+    SetKeyDelay, 30
     Send {LWin Down}{Right}{Right}{Right}{Up}{Up}{Up}{LWin Up}
     return
 
