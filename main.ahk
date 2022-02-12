@@ -540,6 +540,17 @@ CloseExplorerWindows()
     return
 
 
+;======================== window control ========================
+
+#vk64::
+    Send {LWin Down}{Left}{Left}{Left}{Up}{Up}{Up}{LWin Up}
+    return
+
+#vk66::
+    Send {LWin Down}{Right}{Right}{Right}{Up}{Up}{Up}{LWin Up}
+    return
+
+
 ;======================== language control ========================
 
 ; TODO: better handle cases when it's not just a single quick key press
