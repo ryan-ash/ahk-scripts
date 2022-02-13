@@ -553,6 +553,20 @@ CloseExplorerWindows()
     return
 
 
+#vk65::
+    WinGet, winid, ID, A
+    WinSet, Style, -0xC40000, ahk_id %winid%
+    WinSet, Style, -0xC00000, ahk_id %winid%
+    DllCall("SetMenu", "Ptr", WinExist(), "Ptr", 0)
+    return
+
+#vk68::
+    WinGet, winid, ID, A
+    WinSet, Style, +0xC00000, ahk_id %winid%
+    WinSet, Style, +0xC40000, ahk_id %winid%
+    return
+
+
 ;======================== language control ========================
 
 ; TODO: better handle cases when it's not just a single quick key press
