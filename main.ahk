@@ -124,11 +124,11 @@
     return
 
 +WheelDown::
-    SoundSet, -10
+    SoundSet, -5
     return
 
 +WheelUp::
-    SoundSet, +10
+    SoundSet, +5
     return
     
 ;  ^~WheelUp::   
