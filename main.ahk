@@ -275,7 +275,7 @@
     Send {F11}
 +MButton::
 ScrollLock::
-Insert::
+; Insert::
 
     ; Cover/uncover backdrop with GUI (toggle).
     ; Get the currently active window to put on top. Note that alt-tab works normally. 
