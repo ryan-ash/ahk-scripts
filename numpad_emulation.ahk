@@ -47,3 +47,11 @@
 !^+vkbb::
     Send, {NumpadAdd}
     return
+
+!^+vk08::
+    Send, {NumpadDiv}
+    return
+
+!^+vkdc::
+    Send, {NumpadMult}
+    return
