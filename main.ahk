@@ -635,10 +635,17 @@ PrintScreen::
         gosub GuiStart
     return
 
-    
+
 +PrintScreen::
     if (TimerState != 0)
         gosub GuiClose
+    else
+        gosub GuiStart
+    return
+
+
+^PrintScreen::
+    gosub GuiRestart
     return
 
 
@@ -659,6 +666,8 @@ GuiStart:
         SetTimer, UpdateOSD, 50 ; Causes a subroutine to be launched automatically and repeatedly at a specified time interval.
         Gosub, UpdateOSD  ; Make the first update immediate rather than waiting for the timer.
         TimerInitState := 0
+
+        TimerStartTime := A_TickCount
     }
 
     SysGet, m2, Monitor, 2          ; Get data on second monitor size.
@@ -671,11 +680,16 @@ GuiStart:
     drapeWidth := drapeRight - drapeLeft
     offset := 0
 
-    TimerStartTime := A_TickCount
+    
 
     Gui, Show, x%offset% y%offset% NoActivate, Timer ; NoActivate avoids deactivating the currently active window.
 
     Return  ; // End of Auto-Execute Section
+
+
+GuiRestart:
+    TimerStartTime := A_TickCount
+    Return
 
 GuiStop:
     TimerState := 2
