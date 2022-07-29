@@ -622,15 +622,17 @@ SetInputLang(Lang)
 ;======================== CLOCK & TIMER ========================
 
 TimerState := 0
+TimerPaused := 0
 TimerInitState := 0
 TimerStartTime := 0
 TimerEndTime := 0
 
 PrintScreen::
     if (TimerState == 1)
-        gosub GuiStop
-    else if (TimerState == 2)
-        gosub GuiContinue
+        if (TimerPaused == 0)
+            gosub GuiStop
+        else
+            gosub GuiContinue
     else
         gosub GuiStart
     return
@@ -668,6 +670,7 @@ GuiStart:
         TimerInitState := 0
 
         TimerStartTime := A_TickCount
+        gosub GuiContinue
     }
 
     SysGet, m2, Monitor, 2          ; Get data on second monitor size.
@@ -680,8 +683,6 @@ GuiStart:
     drapeWidth := drapeRight - drapeLeft
     offset := 0
 
-    
-
     Gui, Show, x%offset% y%offset% NoActivate, Timer ; NoActivate avoids deactivating the currently active window.
 
     Return  ; // End of Auto-Execute Section
@@ -689,14 +690,16 @@ GuiStart:
 
 GuiRestart:
     TimerStartTime := A_TickCount
+    TimerEndTime := A_TickCount
+    TimerPaused := 0
     Return
 
 GuiStop:
-    TimerState := 2
+    TimerPaused := 1
     Return
 
 GuiContinue:
-    TimerState := 1
+    TimerPaused := 0
     Return
 
 GuiClose:
@@ -710,9 +713,9 @@ UpdateOSD:
     arrivo := 20070603230000        ; this is the finishing time
     mysec := arrivo                 
     EnvSub, mysec, %A_Now%, seconds
-    if (TimerState < 2)
+    if (TimerPaused == 0)
         TimerEndTime := A_TickCount
-    TimerElapsedSeconds := Ceil((TimerEndTime - TimerStartTime)/1000.0)
+    TimerElapsedSeconds := Floor((TimerEndTime - TimerStartTime)/1000.0)
     TimerValue := FormatSeconds(TimerElapsedSeconds)
     GuiControl,, MyText, %A_Hour%:%A_Min%:%A_Sec% | %TimerValue%
     Return 
