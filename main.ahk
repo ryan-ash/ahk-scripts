@@ -623,17 +623,26 @@ SetInputLang(Lang)
 
 TimerState := 0
 TimerInitState := 0
+TimerStartTime := 0
+TimerEndTime := 0
 
 vk2c::
-    if (TimerState != 0)
-        gosub GuiStart
+    if (TimerState == 1)
+        gosub GuiStop
+    else if (TimerState == 2)
+        gosub GuiContinue
     else
-        gosub GuiClose
+        gosub GuiStart
     return
     
++vk2c::
+    if (TimerState != 0)
+        gosub GuiClose
+    return
+
 
 GuiStart:
-    TimerState := 0
+    TimerState := 1
 
     if (TimerInitState != 0)
     {
@@ -643,10 +652,10 @@ GuiStart:
         Gui +LastFound +AlwaysOnTop +ToolWindow -Caption  ; +ToolWindow avoids a taskbar button and an alt-tab menu item.
         Gui, Color, %CustomColor%
         Gui, Font, s13  ; Set a large font size (32-point).
-        Gui, Add, Text, vMyText cGray, -00:00:00 ; XX & YY serve to auto-size the window.
+        Gui, Add, Text, vMyText cGray, -00:00:00 | 00:00:00 ; XX & YY serve to auto-size the window.
 
         WinSet, TransColor, %CustomColor% 150 ; Make all pixels of this color transparent and make the text itself translucent (150):
-        SetTimer, UpdateOSD, 200 ; Causes a subroutine to be launched automatically and repeatedly at a specified time interval.
+        SetTimer, UpdateOSD, 50 ; Causes a subroutine to be launched automatically and repeatedly at a specified time interval.
         Gosub, UpdateOSD  ; Make the first update immediate rather than waiting for the timer.
         TimerInitState := 0
     }
@@ -661,13 +670,22 @@ GuiStart:
     drapeWidth := drapeRight - drapeLeft
     offset := 0
 
+    TimerStartTime := A_TickCount
 
     Gui, Show, x%offset% y%offset% NoActivate, Timer ; NoActivate avoids deactivating the currently active window.
 
     Return  ; // End of Auto-Execute Section
 
-GuiClose:
+GuiStop:
+    TimerState := 2
+    Return
+
+GuiContinue:
     TimerState := 1
+    Return
+
+GuiClose:
+    TimerState := 0
     Gui, Hide
     Return
 
@@ -677,7 +695,11 @@ UpdateOSD:
     arrivo := 20070603230000        ; this is the finishing time
     mysec := arrivo                 
     EnvSub, mysec, %A_Now%, seconds
-    GuiControl,, MyText, %A_Hour%:%A_Min%:%A_Sec%
+    if (TimerState < 2)
+        TimerEndTime := A_TickCount
+    TimerElapsedSeconds := Ceil((TimerEndTime - TimerStartTime)/1000.0)
+    TimerValue := FormatSeconds(TimerElapsedSeconds)
+    GuiControl,, MyText, %A_Hour%:%A_Min%:%A_Sec% | %TimerValue%
     Return 
 
 
