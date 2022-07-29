@@ -59,13 +59,13 @@
     ;  return
 
 ; TODO: debug
-^PrintScreen::
-    Run, %A_WorkingDir%\shortcuts\obs.lnk
-    Sleep 1000
-    Send {Click 1440 540 Screen}
-    Sleep 1000
-    Send {Alt Down}{Ctrl Down}{Shift Down}{vkbb}{Shift Up}{Ctrl Up}{Alt Up}
-    return
+; ^PrintScreen::
+;     Run, %A_WorkingDir%\shortcuts\obs.lnk
+;     Sleep 1000
+;     Send {Click 1440 540 Screen}
+;     Sleep 1000
+;     Send {Alt Down}{Ctrl Down}{Shift Down}{vkbb}{Shift Up}{Ctrl Up}{Alt Up}
+;     return
 
 ;========================== dnd toggle ========================== TODO: rewrite
 
@@ -626,7 +626,7 @@ TimerInitState := 0
 TimerStartTime := 0
 TimerEndTime := 0
 
-vk2c::
+PrintScreen::
     if (TimerState == 1)
         gosub GuiStop
     else if (TimerState == 2)
@@ -634,8 +634,9 @@ vk2c::
     else
         gosub GuiStart
     return
+
     
-+vk2c::
++PrintScreen::
     if (TimerState != 0)
         gosub GuiClose
     return
