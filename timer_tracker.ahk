@@ -89,7 +89,7 @@ GuiStart:
         Gui, Font, s13  ; Set a large font size (32-point).
         Gui, Add, Text, vMyText cGray, -00:00:00 | 00:00:00 ; XX & YY serve to auto-size the window.
 
-        WinSet, TransColor, %CustomColor% 150 ; Make all pixels of this color transparent and make the text itself translucent (150):
+        WinSet, TransColor, %CustomColor% 255 ; Make all pixels of this color transparent and make the text itself translucent (150):
         SetTimer, UpdateOSD, 50 ; Causes a subroutine to be launched automatically and repeatedly at a specified time interval.
         Gosub, UpdateOSD  ; Make the first update immediate rather than waiting for the timer.
         TimerInitState := 0
