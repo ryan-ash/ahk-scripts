@@ -4,18 +4,26 @@ SetWorkingDir, %A_ScriptDir%
 
 ;======================== CLOCK & TIMER ========================
 
-TimerState := 0
+TimerOpened := 0
 TimerPaused := 0
+
 TimerInitState := 1
+
 TimerStartTime := 0
 TimerEndTime := 0
 TimerElapsedSeconds := 0
 
-; control visual state
-; add show / hide timer (alt + ...)
+TimerPauseStartTime := 0
+TimerPauseEndTime := 0
+TimerTimeInPause := 0
+
+ClockVisible := 1
+TimerVisible := 1
+
+; control placement anchor
 
 ScrollLock::
-    if (TimerState == 1)
+    if (TimerOpened == 1)
         if (TimerPaused == 0)
             gosub GuiStop
         else
@@ -26,7 +34,7 @@ ScrollLock::
 
 
 +ScrollLock::
-    if (TimerState != 0)
+    if (TimerOpened != 0)
         gosub GuiClose
     else
         gosub GuiStart
@@ -38,8 +46,35 @@ ScrollLock::
     return
 
 
+!^#vk25::
+    gosub ToggleClock
+    return
+
+
+!^#vk27::
+    gosub ToggleTimer
+    return
+
+
+!#vk25::
+    gosub MoveTimerLeft
+    return
+
+!#vk26::
+    gosub MoveTimerUp
+    return
+
+!#vk27::
+    gosub MoveTimerRight
+    return
+
+!#vk28::
+    gosub MoveTimerDown
+    return
+
+
 GuiStart:
-    TimerState := 1
+    TimerOpened := 1
 
     if (TimerInitState != 0)
     {
@@ -78,10 +113,14 @@ GuiStart:
 GuiRestart:
     TimerStartTime := A_TickCount
     TimerEndTime := A_TickCount
+    TimerTimeInPause := 0
+    TimerPauseStartTime := 0
+    TimerPauseEndTime := 0
     Return
 
 GuiStop:
     TimerPaused := 1
+    TimerPauseStartTime := A_TickCount
     SetScrollLockState, off
     Return
 
@@ -89,25 +128,54 @@ GuiContinue:
     TimerPaused := 0
     if (TimerElapsedSeconds == 0)
         gosub GuiRestart
+    TimerPauseEndTime := A_TickCount
+    if (TimerPauseStartTime != 0) {
+        TimeInThisPause := Floor((TimerPauseEndTime - TimerPauseStartTime)/1000.0)
+        TimerTimeInPause := TimerTimeInPause + TimeInThisPause
+        TimerPauseStartTime := 0
+    }
     SetScrollLockState, on
     Return
 
 GuiClose:
-    TimerState := 0
+    TimerOpened := 0
     Gui, Hide
     Return
 
+ToggleClock:
+    if (ClockVisible == 1)
+        ClockVisible := 0
+    else
+        ClockVisible := 1
+    return
+
+ToggleTimer:
+    if (TimerVisible == 1)
+        TimerVisible := 0
+    else
+        TimerVisible := 1
+    return
 
 
 UpdateOSD:
     arrivo := 20070603230000        ; this is the finishing time
     mysec := arrivo                 
     EnvSub, mysec, %A_Now%, seconds
+
     if (TimerPaused == 0)
         TimerEndTime := A_TickCount
-    TimerElapsedSeconds := Floor((TimerEndTime - TimerStartTime)/1000.0)
+    TimerElapsedSeconds := Floor((TimerEndTime - TimerStartTime)/1000.0) - TimerTimeInPause
     TimerValue := FormatSeconds(TimerElapsedSeconds)
-    GuiControl,, MyText, %A_Hour%:%A_Min%:%A_Sec% | %TimerValue%
+
+    if (TimerVisible == 1 && ClockVisible == 1)
+        GuiControl,, MyText, %A_Hour%:%A_Min%:%A_Sec% | %TimerValue%
+    else if (ClockVisible == 1)
+        GuiControl,, MyText, %A_Hour%:%A_Min%:%A_Sec%
+    else if (TimerVisible == 1)
+        GuiControl,, MyText, %TimerValue%
+    else
+        GuiControl,, MyText, 
+
     Return 
 
 
@@ -121,3 +189,12 @@ FormatSeconds(NumberOfSeconds)  ; Convert the specified number of seconds to hh:
     hours := hours < 10 ? "0" . hours : hours
     return hours ":" mmss  
 }
+
+MoveTimerLeft:
+    return
+MoveTimerUp:
+    return
+MoveTimerRight:
+    return
+MoveTimerDown:
+    return
