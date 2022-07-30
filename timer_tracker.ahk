@@ -4,6 +4,8 @@ SetWorkingDir, %A_ScriptDir%
 
 ;======================== CLOCK & TIMER ========================
 
+SetScrollLockState, off
+
 TimerOpened := 0
 TimerPaused := 0
 
@@ -20,14 +22,15 @@ TimerTimeInPause := 0
 ClockVisible := 1
 TimerVisible := 1
 
-; control placement anchor
+PlacementRow := 0
+PlacementColumn := 0
 
 ScrollLock::
     if (TimerOpened == 1)
         if (TimerPaused == 0)
-            gosub GuiStop
+            gosub TimerPause
         else
-            gosub GuiContinue
+            gosub TimerResume
     else
         gosub GuiStart
     return
@@ -42,7 +45,7 @@ ScrollLock::
 
 
 !ScrollLock::
-    gosub GuiRestart
+    gosub TimerRestart
     return
 
 
@@ -92,25 +95,34 @@ GuiStart:
         TimerInitState := 0
 
         TimerStartTime := A_TickCount
-        gosub GuiContinue
+        gosub TimerResume
     }
 
-    SysGet, m2, Monitor, 2          ; Get data on second monitor size.
     SysGet, m1, Monitor, 1
-    drapeTop := m1Top < m2Top ? m1Top : m2Top
-    drapeBottom := m1Bottom > m2Bottom ? m1Bottom : m2Bottom
-    drapeHeight := drapeBottom - drapeTop
-    drapeLeft := m1Left < m2Left ? m1Left : m2Left
-    drapeRight := m1Right > m2Right ? m1Right : m2Right
-    drapeWidth := drapeRight - drapeLeft
-    offset := 0
+    MonitorHeight := m1Bottom - m1Top
+    MonitorWidth := m1Right - m1Left
+    ActivePartLength := 0
+    if (TimerVisible == 1 && ClockVisible == 1)
+        ActivePartLength := 174
+    else if (TimerVisible == 1 || ClockVisible == 1)
+        ActivePartLength := 96
+    WidthOffset := ActivePartLength * PlacementColumn / 2
+    HeightOffset := 18 * PlacementRow
+    XOffset := Floor(PlacementColumn * MonitorWidth / 2) - WidthOffset
+    YOffset := Floor(PlacementRow * MonitorHeight / 2) - HeightOffset
 
-    Gui, Show, x%offset% y%offset% NoActivate, Timer ; NoActivate avoids deactivating the currently active window.
+    Gui, Show, x%XOffset% y%YOffset% NoActivate, Timer ; NoActivate avoids deactivating the currently active window.
 
     Return  ; // End of Auto-Execute Section
 
 
-GuiRestart:
+GuiClose:
+    TimerOpened := 0
+    Gui, Hide
+    Return
+
+
+TimerRestart:
     TimerStartTime := A_TickCount
     TimerEndTime := A_TickCount
     TimerTimeInPause := 0
@@ -118,16 +130,16 @@ GuiRestart:
     TimerPauseEndTime := 0
     Return
 
-GuiStop:
+TimerPause:
     TimerPaused := 1
     TimerPauseStartTime := A_TickCount
     SetScrollLockState, off
     Return
 
-GuiContinue:
+TimerResume:
     TimerPaused := 0
     if (TimerElapsedSeconds == 0)
-        gosub GuiRestart
+        gosub TimerRestart
     TimerPauseEndTime := A_TickCount
     if (TimerPauseStartTime != 0) {
         TimeInThisPause := Floor((TimerPauseEndTime - TimerPauseStartTime)/1000.0)
@@ -137,16 +149,12 @@ GuiContinue:
     SetScrollLockState, on
     Return
 
-GuiClose:
-    TimerOpened := 0
-    Gui, Hide
-    Return
-
 ToggleClock:
     if (ClockVisible == 1)
         ClockVisible := 0
     else
         ClockVisible := 1
+    gosub GuiStart
     return
 
 ToggleTimer:
@@ -154,6 +162,7 @@ ToggleTimer:
         TimerVisible := 0
     else
         TimerVisible := 1
+    gosub GuiStart
     return
 
 
@@ -191,10 +200,22 @@ FormatSeconds(NumberOfSeconds)  ; Convert the specified number of seconds to hh:
 }
 
 MoveTimerLeft:
+    if (PlacementColumn > 0)
+        PlacementColumn := PlacementColumn - 1
+    gosub GuiStart
     return
 MoveTimerUp:
+    if (PlacementRow > 0)
+        PlacementRow := PlacementRow - 1
+    gosub GuiStart
     return
 MoveTimerRight:
+    if (PlacementColumn < 2)
+        PlacementColumn := PlacementColumn + 1
+    gosub GuiStart
     return
 MoveTimerDown:
+    if (PlacementRow < 2)
+        PlacementRow := PlacementRow + 1
+    gosub GuiStart
     return
