@@ -585,6 +585,33 @@ CloseExplorerWindows()
     return
 
 
+;======================== mouse hider ========================
+
+^+~::
+    Coordmode, Mouse, Screen
+    MouseMove, 9999, 0, 1, R
+    Sleep 50
+    MouseMove, 1, 0, 1, R
+    Sleep 50
+    MouseMove, 9999, 9999, 1, R
+    return
+
+MouseHideTwoMonitors:
+    SysGet, m2, Monitor, 2
+    SysGet, m1, Monitor, 1
+    mBottom := m1Bottom > m2Bottom ? m1Bottom : m2Bottom
+    mRight := m1Right > m2Right ? m1Right : m2Right
+    MouseMove, mRight, mBottom
+    MsgBox, "%mRight% %mBottom%"
+    return
+
+MouseHideOneMonitor:
+    SysGet, m1, Monitor, 1
+    mBottom := m1Bottom
+    mRight := m1Right
+    MouseMove, mRight, mBottom
+    return
+
 ;======================== language control ========================
 
 ; TODO: better handle cases when it's not just a single quick key press
