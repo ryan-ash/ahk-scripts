@@ -587,7 +587,7 @@ CloseExplorerWindows()
 
 ;======================== mouse hider ========================
 
-^+~::
+^+#vk14::
     Coordmode, Mouse, Screen
     MouseMove, 9999, 0, 1, R
     Sleep 50
