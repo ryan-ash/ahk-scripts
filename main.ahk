@@ -401,6 +401,7 @@ Stop:
 
 ;======================== hide \ show navigation pane ========================
 
+#If WinActive(ahk_exe Explorer.exe)
 F4::
     Send {Shift Down}{Shift Up}
     Sleep 100
