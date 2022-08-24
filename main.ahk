@@ -397,23 +397,7 @@ Stop:
     Send {F5}
     Sleep 100
     Send !{Tab}        
-    return
-
-;======================== hide \ show navigation pane ========================
-
-#If WinActive(ahk_exe Explorer.exe)
-F4::
-    Send {Shift Down}{Shift Up}
-    Sleep 100
-    Send {LAlt Down}
-    ;  Sleep 1000
-    Send {vk56}
-    ;  Sleep 500
-    Send {vk4e}
-    ;  Sleep 500
-    Send {LAlt Up}{Space}
-    return
-        
+    return        
 
 
 ;======================== change Audio Playback Device ========================
@@ -647,4 +631,20 @@ SetInputLang(Lang)
     {
         SetInputLang(0x0419) ; Russian
     }
+    return
+
+
+;======================== hide \ show navigation pane ========================
+
+#If WinActive(ahk_exe Explorer.exe)
+F4::
+    Send {Shift Down}{Shift Up}
+    Sleep 100
+    Send {LAlt Down}
+    ;  Sleep 1000
+    Send {vk56}
+    ;  Sleep 500
+    Send {vk4e}
+    ;  Sleep 500
+    Send {LAlt Up}{Space}
     return
