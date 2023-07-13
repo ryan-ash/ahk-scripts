@@ -288,7 +288,7 @@ CapsLock::
 
 Drape:
 
-    SetCapsLockState, on
+    ; SetCapsLockState, on
 
     SysGet, MonitorCount, MonitorCount
 
@@ -340,7 +340,7 @@ DrapeOneMonitor:
 
 RestoreNormalcy:
 
-    SetCapsLockState, off
+    ; SetCapsLockState, off
     Gui 2:Destroy                                               ; Remove blinds. 
     winshow, ahk_class Shell_TrayWnd                            ; Show tray.
     winshow, ahk_class Shell_SecondaryTrayWnd
