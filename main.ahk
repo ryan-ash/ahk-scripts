@@ -266,14 +266,14 @@
 
 ;======================== backdrop ========================
         
-^MButton::
-    Send {F11}
-    return
+; ^MButton::
+;     Send {F11}
+;     return
 
-^+MButton::
+; ^+MButton::
 ^F11::
     Send {F11}
-+MButton::
+; +MButton::
 CapsLock::
 ; Insert::
 
