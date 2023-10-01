@@ -266,9 +266,9 @@
 
 ;======================== backdrop ========================
         
-; ^MButton::
-;     Send {F11}
-;     return
++^MButton::
+    Send {F11}
+    return
 
 ; ^+MButton::
 ^F11::
