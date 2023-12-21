@@ -19,11 +19,11 @@ TimerPauseStartTime := 0
 TimerPauseEndTime := 0
 TimerTimeInPause := 0
 
-ClockVisible := 1
+ClockVisible := 0
 TimerVisible := 1
 
-PlacementRow := 0
-PlacementColumn := 0
+PlacementRow := 1
+PlacementColumn := 2
 
 ScrollLock::
     if (TimerOpened == 1)
